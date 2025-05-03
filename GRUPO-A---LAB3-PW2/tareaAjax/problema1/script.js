@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     labels: Object.keys(data[region1].confirmed),
                     datasets: [
                         {
-                            label: region1,
+                            label: `Casos en ${region1}`,
                             data: Object.values(data[region1].confirmed),
                             borderColor: '#FF6384',
                             backgroundColor: 'rgba(255, 99, 132, 0.1)',
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             fill: true
                         },
                         {
-                            label: region2,
+                            label: `Casos en ${region2}`,
                             data: Object.values(data[region2].confirmed),
                             borderColor: '#36A2EB',
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
@@ -47,7 +47,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 new Chart(ctx, {
                     type: 'line',
-                    data: chartData
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: `COVID-19: ${region1} vs ${region2}`,
+                                font: { size: 16 }
+                            },
+                            legend: { position: 'top' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Casos confirmados' }
+                            },
+                            x: {
+                                title: { display: true, text: 'Fechas' }
+                            }
+                        }
+                    }
                 });
             });
         })
