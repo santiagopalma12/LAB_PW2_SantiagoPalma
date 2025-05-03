@@ -1,14 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let currentChart = null; // 🟡 Para evitar múltiples gráficos superpuestos
+    let currentChart = null;
 
-    // 1. Cargar datos
-    fetch('../data.json')
+    fetch('data.json')
         .then(response => {
             if (!response.ok) throw new Error('Error al cargar datos');
             return response.json();
         })
-        .then(data => {
-            // 2. Llenar selectores
+        .then(dataList => {
+            // Convertir la lista en un objeto tipo: { "Ucayali": { confirmed: [...] }, ... }
+            const data = {};
+            dataList.forEach(regionData => {
+                data[regionData.region] = regionData;
+            });
+
             const region1Select = document.getElementById('region1');
             const region2Select = document.getElementById('region2');
 
@@ -20,12 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 region2Select.add(new Option(region, region));
             });
 
-            // 3. Evento y gráfico
             document.getElementById('compare-btn').addEventListener('click', function () {
                 const region1 = region1Select.value;
                 const region2 = region2Select.value;
 
-                // 3.1 Validaciones
                 if (!region1 || !region2) {
                     alert('⚠️ Debes seleccionar DOS regiones');
                     return;
@@ -35,20 +37,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                // 4. Configurar gráfico
                 const ctx = document.getElementById('comparisonChart').getContext('2d');
+                if (currentChart) currentChart.destroy();
 
-                // 🔄 Destruir gráfico anterior si existe
-                if (currentChart) {
-                    currentChart.destroy();
-                }
+                // Obtener datos confirmados y fechas
+                const confirmed1 = data[region1].confirmed.map(d => parseInt(d.value));
+                const confirmed2 = data[region2].confirmed.map(d => parseInt(d.value));
+                const fechas = data[region1].confirmed.map(d => d.date); // asumimos mismo orden y fechas
 
                 const chartData = {
-                    labels: Object.keys(data[region1].confirmed),
+                    labels: fechas,
                     datasets: [
                         {
                             label: `Casos en ${region1}`,
-                            data: Object.values(data[region1].confirmed),
+                            data: confirmed1,
                             borderColor: '#FF6384',
                             backgroundColor: 'rgba(255, 99, 132, 0.1)',
                             tension: 0.3,
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         },
                         {
                             label: `Casos en ${region2}`,
-                            data: Object.values(data[region2].confirmed),
+                            data: confirmed2,
                             borderColor: '#36A2EB',
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
                             tension: 0.3,
@@ -65,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     ]
                 };
 
-                // 5. Crear gráfico
                 currentChart = new Chart(ctx, {
                     type: 'line',
                     data: chartData,
