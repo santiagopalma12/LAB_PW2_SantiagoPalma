@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(dataList => {
-            // Convertir la lista en un objeto tipo: { "Ucayali": { confirmed: [...] }, ... }
             const data = {};
             dataList.forEach(regionData => {
                 data[regionData.region] = regionData;
@@ -29,11 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const region2 = region2Select.value;
 
                 if (!region1 || !region2) {
-                    alert('⚠️ Debes seleccionar DOS regiones');
+                    alert(' Debes seleccionar DOS regiones');
                     return;
                 }
                 if (region1 === region2) {
-                    alert('❌ No puedes comparar la misma región');
+                    alert(' No puedes comparar la misma región');
                     return;
                 }
 
