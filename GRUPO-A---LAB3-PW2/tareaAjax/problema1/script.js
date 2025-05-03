@@ -1,10 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    let currentChart = null; // 🟡 Para evitar múltiples gráficos superpuestos
+
+    // 1. Cargar datos
     fetch('../data.json')
         .then(response => {
             if (!response.ok) throw new Error('Error al cargar datos');
             return response.json();
         })
         .then(data => {
+            // 2. Llenar selectores
             const region1Select = document.getElementById('region1');
             const region2Select = document.getElementById('region2');
 
@@ -16,13 +20,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 region2Select.add(new Option(region, region));
             });
 
-            document.getElementById('compare-btn').addEventListener('click', function() {
+            // 3. Evento y gráfico
+            document.getElementById('compare-btn').addEventListener('click', function () {
                 const region1 = region1Select.value;
                 const region2 = region2Select.value;
 
-                if (!region1 || !region2 || region1 === region2) return;
+                // 3.1 Validaciones
+                if (!region1 || !region2) {
+                    alert('⚠️ Debes seleccionar DOS regiones');
+                    return;
+                }
+                if (region1 === region2) {
+                    alert('❌ No puedes comparar la misma región');
+                    return;
+                }
 
+                // 4. Configurar gráfico
                 const ctx = document.getElementById('comparisonChart').getContext('2d');
+
+                // 🔄 Destruir gráfico anterior si existe
+                if (currentChart) {
+                    currentChart.destroy();
+                }
+
                 const chartData = {
                     labels: Object.keys(data[region1].confirmed),
                     datasets: [
@@ -45,7 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     ]
                 };
 
-                new Chart(ctx, {
+                // 5. Crear gráfico
+                currentChart = new Chart(ctx, {
                     type: 'line',
                     data: chartData,
                     options: {
