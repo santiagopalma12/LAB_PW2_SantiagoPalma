@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="showCD"></div>
+
+<script>
+const xhttp = new XMLHttpRequest();
+xhttp.onload = function() {
+  const xmlDoc = xhttp.responseXML;
+  const cd = xmlDoc.getElementsByTagName("CD");
+  let content = "";
+  for (let i = 0; i < cd.length; i++) {
+    content += "<br>Artist: " + 
+    cd[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue + 
+    "<br>Title: " + 
+    cd[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue + 
+    "<br>Year: " + 
+    cd[i].getElementsByTagName("YEAR")[0].childNodes[0].nodeValue + 
+    "<br><br>";
+  }
+  document.getElementById("showCD").innerHTML = content;
+}
+xhttp.open("GET", "cd_catalog.xml");
+xhttp.send();
+</script>
+
+</body>
+</html>

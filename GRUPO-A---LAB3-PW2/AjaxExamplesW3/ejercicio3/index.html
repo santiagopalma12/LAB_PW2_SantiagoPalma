@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>The XMLHttpRequest Object</h2>
+<p>La función getAllResponseHeaders() devuelve toda la información de encabezados de la respuesta:</p>
+
+<pre id="demo"></pre>
+
+<script>
+const xhttp = new XMLHttpRequest();
+xhttp.onload = function() {
+  document.getElementById("demo").innerHTML = this.getAllResponseHeaders();
+}
+xhttp.open("GET", "ajax_info.txt");
+xhttp.send();
+</script>
+
+</body>
+</html>

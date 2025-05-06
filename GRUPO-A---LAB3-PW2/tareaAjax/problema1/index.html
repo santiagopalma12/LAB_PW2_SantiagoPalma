@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comparación entre regiones</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head> 
+<body>
+    <h1>Comparación de casos COVID entre regiones</h1>
+    <div class="controls">
+        <select id="region1" class="region-selector">
+            <option value="">Seleccione región 1</option>
+        </select>
+        <select id="region2" class="region-selector">
+            <option value="">Seleccione región 2</option>
+        </select>
+        <button id="compare-btn">Comparar</button>
+    </div>
+    <div class="chart-container">
+        <canvas id="comparisonChart"></canvas>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
