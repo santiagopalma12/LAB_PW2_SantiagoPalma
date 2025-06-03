@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'destinos_app'
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -77,3 +78,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'index'          
+LOGOUT_REDIRECT_URL = 'index'        
+LOGIN_URL = 'login'                  
