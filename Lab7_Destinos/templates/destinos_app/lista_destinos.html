@@ -1,0 +1,5 @@
+{% comment %} Dentro del bucle for de destinos en index.html o lista_destinos.html {% endcomment %}
+{% if user.is_authenticated %} {# O permisos más específicos #}
+    <a href="{% url 'modificar_destino' pk=destino.pk %}" class="btn btn-sm btn-warning">Modificar</a>
+    <a href="{% url 'eliminar_destino' pk=destino.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+{% endif %}
