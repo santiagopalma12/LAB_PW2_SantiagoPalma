@@ -3,6 +3,9 @@ from .models import DestinosTuristicos
 from .forms import DestinoForm
 from django.contrib.auth.decorators import login_required 
 from django.contrib import messages
+from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
+
 
 def index(request):
     destinos = DestinosTuristicos.objects.all() 
@@ -45,4 +48,4 @@ def eliminar_destino(request, pk):
 
 def listar_destinos(request): 
     destinos = DestinosTuristicos.objects.all()
-    return render(request, 'destinos_app/lista_destinos.html', {'destinos': destinos})
+    return render(request, 'destinos_app/eliminar_confirm.html', {'form': form, 'accion': 'Eliminar', 'destino': destino})
