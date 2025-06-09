@@ -1,11 +1,15 @@
-from django.shortcuts import get_object_or_404
-from .models import Libro
+from django.shortcuts import render, get_object_or_404
+from .models import Libro 
 from .utils import render_to_pdf
-from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.http import HttpResponse
 
 def home(request):
-    return HttpResponse("Bienvenido a la biblioteca")
+    libros = Libro.objects.all()
+    context = {
+        'libros': libros
+    }
+    return render(request, 'core/home.html', context)
 
 def generar_pdf_libro(request, pk):
     libro = get_object_or_404(Libro, pk=pk)
@@ -27,6 +31,6 @@ def enviar_email_prueba(request):
 
     try:
         send_mail(asunto, mensaje, remitente, destinatarios)
-        return HttpResponse("Correo 'enviado'. Revisa la consola del servidor.")
+        return HttpResponse("Correo 'enviado'. Revisa la consola del servidor. <a href='/'>Volver al inicio</a>")
     except Exception as e:
         return HttpResponse(f"Error al enviar el correo: {e}")

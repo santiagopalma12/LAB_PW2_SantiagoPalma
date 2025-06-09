@@ -1,0 +1,52 @@
+<!-- core/templates/core/home.html -->
+{% load static %} <!-- Necesario para cargar archivos CSS -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-g">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual</title>
+    <!-- Enlazamos nuestro archivo CSS (opcional, pero recomendado) -->
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+</head>
+<body>
+
+    <header>
+        <h1>Mi Biblioteca Virtual</h1>
+    </header>
+
+    <main>
+        <section class="book-list">
+            <h2>Catálogo de Libros</h2>
+            {% if libros %}
+                <ul>
+                    {% for libro in libros %}
+                        <li>
+                            <span class="book-title">{{ libro.titulo }}</span>
+                            <span class="book-author">por {{ libro.autor.nombre }}</span>
+                            <!-- Enlace para generar el PDF de este libro -->
+                            <a href="{% url 'core:libro_pdf' libro.pk %}" class="btn btn-pdf" target="_blank">
+                                Generar PDF
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Aún no hay libros en la biblioteca. ¡Añade algunos desde el <a href="/admin/">panel de administrador</a>!</p>
+            {% endif %}
+        </section>
+
+        <hr>
+
+        <section class="tests">
+            <h2>Pruebas del Sistema</h2>
+            <!-- Enlace para probar el envío de email -->
+            <a href="{% url 'core:enviar_email' %}" class="btn btn-email">
+                Probar Envío de Email
+            </a>
+            <p>(Revisa la consola del servidor después de hacer clic)</p>
+        </section>
+    </main>
+
+</body>
+</html>
