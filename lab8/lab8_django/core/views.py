@@ -1,6 +1,10 @@
 from django.shortcuts import get_object_or_404
 from .models import Libro
 from .utils import render_to_pdf
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Bienvenido a la biblioteca")
 
 def generar_pdf_libro(request, pk):
     libro = get_object_or_404(Libro, pk=pk)
